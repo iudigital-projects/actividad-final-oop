@@ -36,6 +36,17 @@ public class App {
     cantidades[0] = 2;
     cantidades[1] = 1;
     villaNueva.venderLibros(librosAVender, cantidades, true);
-    villaNueva.buscarLibros();
+    
+    String[] librosAVender2 = new String[2];
+    librosAVender2[0] = "LIB123";
+    librosAVender2[1] = "LIB789";
+
+    int[] cantidades2 = new int[2];
+    cantidades2[0] = 1;
+    cantidades2[1] = 3;
+
+    villaNueva.venderLibros(librosAVender2, cantidades2, false);
+
+    villaNueva.mostrarInformacion();
   }
 }

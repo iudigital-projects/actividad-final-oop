@@ -24,6 +24,10 @@ class Libreria {
     this.nombre = nombre;
   }
 
+  public void mostrarInformacion() {
+    System.out.printf("Libreria: %s | Ingresos: %s \n", nombre, ingresos);
+  }
+
   // Agregar libro a la tienda
   public void agregarLibro(Libro libro) {
     if (this.cantidad < this.max) {
@@ -76,6 +80,8 @@ class Libreria {
     return total - (total * porcentajeDescuento);
   }
 
+  // el metodo getLibro usa Optional para 
+  // permitir retornar vacio cuando el libro no existe
   private Optional<Libro> getLibro(String uid) {
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
@@ -124,6 +130,8 @@ class Libreria {
       } else {
         infoDescuento = "No es estudiante, no tiene descuento.";
       }
+
+      ingresos += precioFinal;
       
       imprimirFactura(infoVenta, infoDescuento, precioFinal);
 
