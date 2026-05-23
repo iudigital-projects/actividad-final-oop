@@ -1,12 +1,14 @@
 package com;
 
+import java.util.Optional;
+
 class Libreria {
   private String nombre;
   private int cantidad;
   private int max = 10;
   private Libro[] libros = new Libro[max];
   private double ingresos = 0;
-  private double porcentajeDescuento = 0.01;
+  private double porcentajeDescuento = 0.1;
 
   private String SIN_LIBROS_MENSAJE = "No hay libros para mostrar";
 
@@ -22,16 +24,21 @@ class Libreria {
     this.nombre = nombre;
   }
 
- public void agregarLibro(Libro libro) {
-   if (this.cantidad < this.max) {
-     this.libros[cantidad] = libro; 
-     this.cantidad = this.cantidad + 1;
-   }
- } 
+  // Agregar libro a la tienda
+  public void agregarLibro(Libro libro) {
+    if (this.cantidad < this.max) {
+      this.libros[cantidad] = libro;
+      this.cantidad = this.cantidad + 1;
+    }
+  }
 
-  public void listarLibros() {
+  // BUSCAR LIBROS
+  // Usamos sobrecarga de métodos para permitir diferentes busquedas
+  //
+  // 1. Listar todos los libros disponibles en la libreria
+  public void buscarLibros() {
     if (cantidad > 0) {
-      for(int i = 0; i < cantidad; i++) {
+      for (int i = 0; i < cantidad; i++) {
         libros[i].mostrarInformacion();
       }
     } else {
@@ -39,16 +46,73 @@ class Libreria {
     }
   }
 
-
-  public void listarLibros(String categoria) {
+  // buscar 1 solo libro por su uid
+  public void buscarLibros(String uid) {
     if (cantidad > 0) {
-      for(int i = 0; i < cantidad; i++) {
-        if(categoria == libros[i].getCategoria()) {
+      for (int i = 0; i < cantidad; i++) {
+        if (uid == libros[i].getUid())
+          libros[i].mostrarInformacion();
+      }
+    } else {
+      System.out.println(SIN_LIBROS_MENSAJE);
+    }
+  }
+
+  // buscar por categoria, año o autor
+  public void buscarLibros(String nombre, String categoria, int anio, String autor) {
+    if (cantidad > 0) {
+      for (int i = 0; i < cantidad; i++) {
+        if (nombre == libros[i].getNombre() || categoria == libros[i].getCategoria() || anio == libros[i].getAnio()
+            || autor == libros[i].getAutor()) {
           libros[i].mostrarInformacion();
         }
       }
     } else {
       System.out.println(SIN_LIBROS_MENSAJE);
+    }
+  }
+
+  private double calcularDescuento(double total) {
+    return total - (total * porcentajeDescuento);
+  }
+
+  private Optional<Libro> getLibro(String uid) {
+    if (cantidad > 0) {
+      for (int i = 0; i < cantidad; i++) {
+        if (libros[i].getUid() == uid) {
+          return Optional.of(libros[i]);
+        } else {
+          Optional.empty();
+        }
+      }
+    }
+
+    return Optional.empty();
+  }
+
+  public void venderLibros(String[] uids, int[] cantidades, boolean esEstudiante) {
+    if (cantidades.length == uids.length) {
+      double precioFinal = 0;
+
+      System.out.println("FACTURA DE VENTA");
+      System.out.println("-------------------------");
+
+      for (int i = 0; i < uids.length; i++) {
+        Libro libro = getLibro(uids[i]).get();
+        String nombre = libro.getNombre();
+        double precio = libro.getPrecio();
+        libro.setStock(libro.getStock() - cantidades[i]);
+        System.out.printf("Libro %s: %s | precio: %s | unidades: %s\n", (i + 1), nombre, precio, cantidades[i]);
+        precioFinal += precio * cantidades[i];
+      }
+
+      if (esEstudiante) {
+        precioFinal = calcularDescuento(precioFinal);
+        System.out.println("Descuento de estudiante: " + porcentajeDescuento * 100 + "%");
+      }
+
+      System.out.println("-----------------------------");
+      System.out.println("Precio final: " + precioFinal);
     }
   }
 }

@@ -45,9 +45,36 @@ public class Libro {
     System.out.println("------------------------------------------------------");
   }
 
+  public String getUid() {
+      return uid;
+  }
+
+  public String getNombre() {
+      return nombre;
+  }
+
   public String getCategoria() {
       return categoria;
   }
 
+  public int getAnio() {
+      return anio;
+  }
+
+  public double getPrecio() {
+      return precio;
+  }
+
+  public String getAutor() {
+      return autor;
+  }
+
+  public int getStock() {
+      return stock;
+  }
+
+  public void setStock(int stock) {
+      this.stock = stock;
+  }
 }
 
