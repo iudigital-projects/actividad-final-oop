@@ -90,29 +90,43 @@ class Libreria {
     return Optional.empty();
   }
 
-  public void venderLibros(String[] uids, int[] cantidades, boolean esEstudiante) {
-    if (cantidades.length == uids.length) {
-      double precioFinal = 0;
-
+  private void imprimirFactura(String infoVenta, String infoDescuento, double precioFinal) {
       System.out.println("FACTURA DE VENTA");
       System.out.println("-------------------------");
+      System.out.println(infoVenta);
+      System.out.println(infoDescuento);
+      System.out.println("-------------------------");
+      System.out.println("Precio final: $" + precioFinal);
+      System.out.println();
+      System.out.println();
+
+  }
+
+  public void venderLibros(String[] uids, int[] cantidades, boolean esEstudiante) {
+    if (cantidades.length == uids.length) {
+      String infoVenta = "";
+      String infoDescuento = "";
+      double precioFinal = 0;
+
 
       for (int i = 0; i < uids.length; i++) {
         Libro libro = getLibro(uids[i]).get();
         String nombre = libro.getNombre();
         double precio = libro.getPrecio();
         libro.setStock(libro.getStock() - cantidades[i]);
-        System.out.printf("Libro %s: %s | precio: %s | unidades: %s\n", (i + 1), nombre, precio, cantidades[i]);
+        infoVenta += String.format("Libro %s: %s | precio: %s | unidades: %s\n", (i + 1), nombre, precio, cantidades[i]);
         precioFinal += precio * cantidades[i];
       }
 
       if (esEstudiante) {
         precioFinal = calcularDescuento(precioFinal);
-        System.out.println("Descuento de estudiante: " + porcentajeDescuento * 100 + "%");
+        infoDescuento = String.format("Descuento de estudiante: %s%%",porcentajeDescuento * 100);
+      } else {
+        infoDescuento = "No es estudiante, no tiene descuento.";
       }
+      
+      imprimirFactura(infoVenta, infoDescuento, precioFinal);
 
-      System.out.println("-----------------------------");
-      System.out.println("Precio final: " + precioFinal);
     }
   }
 }
