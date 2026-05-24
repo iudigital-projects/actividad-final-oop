@@ -59,6 +59,22 @@ public class App {
     libreria.agregarStock(uid, stock);
   }
 
+  public static void buscarLibros(Scanner leer, Libreria libreria) {
+    System.out.println("Buscar libro por nombre, categoria, año o autor");
+    System.out.print("Ingrese el nombre o enter para dejar vacío: ");
+    String nombre = leer.nextLine();
+    System.out.print("Ingrese la categoria o enter para dejar vacío: ");
+    String categoria = leer.nextLine();
+    System.out.print("Ingrese año o el número 0: ");
+    int anio = Integer.parseInt(leer.nextLine());
+    System.out.print("Ingrese autor o enter para dejar vacío: ");
+    String autor = leer.nextLine();
+    System.out.println();
+
+    libreria.buscarLibros(nombre, categoria, anio, autor);
+    System.out.println();
+  }
+
   public static void main(String[] args) {
 
     // INICIALIZAMOS UNA LIBRERIA CON UNOS CUANTOS LIBROS
@@ -85,7 +101,6 @@ public class App {
     villaNueva.agregarLibro(libro2);
     villaNueva.agregarLibro(libro3);
     villaNueva.agregarLibro(libro4);
-    villaNueva.buscarLibros("LIB789");
 
     // Menú
     int opcion;
@@ -113,7 +128,8 @@ public class App {
           villaNueva.buscarLibros();
           break;
         case 4:
-          villaNueva.buscarLibros();
+          buscarLibros(leer, villaNueva);
+          break;
         default:
           break;
       }

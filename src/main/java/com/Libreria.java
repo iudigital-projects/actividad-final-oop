@@ -105,12 +105,18 @@ class Libreria {
 
   // buscar por categoria, año o autor
   public void buscarLibros(String nombre, String categoria, int anio, String autor) {
+    boolean existe = false;
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
         if (nombre.equals(libros[i].getNombre()) || categoria.equals(libros[i].getCategoria())
             || anio == libros[i].getAnio() || autor.equals(libros[i].getAutor())) {
+          existe = true;
           libros[i].mostrarInformacion();
-        }
+        } 
+      }
+
+      if(existe == false) {
+        System.out.println("No se encontro ningún libro");
       }
     } else {
       System.out.println(SIN_LIBROS_MENSAJE);
