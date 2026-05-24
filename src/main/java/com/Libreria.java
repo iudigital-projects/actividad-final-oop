@@ -29,14 +29,43 @@ class Libreria {
     System.out.printf("Libreria: %s | Ingresos: %s \n", nombre, ingresos);
   }
 
-  // Agregar libro a la tienda
   public void agregarLibro(Libro libro) {
     if (this.cantidad < this.max) {
       this.libros[cantidad] = libro;
       this.cantidad = this.cantidad + 1;
     }
   }
-  
+
+  // Agregar libro a la tienda
+  public void agregarLibro(
+      String uid,
+      String nombre,
+      String autor,
+      int precio,
+      int anio,
+      String categoria,
+      int stock,
+      String descripcion,
+      boolean disponible) {
+    if (this.cantidad < this.max) {
+      this.libros[cantidad] = new Libro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
+      this.cantidad = this.cantidad + 1;
+    }
+  }
+
+  public void agregarStock(String uid, int stock) {
+    if (cantidad > 0) {
+      for (int i = 0; i < cantidad; i++) {
+        if (uid.equals(libros[i].getUid())) {
+          libros[i].setStock(libros[i].getStock() + stock);
+        }
+      }
+      System.out.println("Stock agregado correctamente.\n");
+    } else {
+      System.out.println(SIN_LIBROS_MENSAJE);
+    }
+  }
+
   // BUSCAR LIBROS
   // Usamos sobrecarga de métodos para permitir diferentes busquedas
   //
@@ -46,6 +75,7 @@ class Libreria {
       for (int i = 0; i < cantidad; i++) {
         libros[i].mostrarInformacion();
       }
+      System.out.println();
     } else {
       System.out.println(SIN_LIBROS_MENSAJE);
     }
@@ -55,8 +85,9 @@ class Libreria {
   public void buscarLibros(String uid) {
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
-        if (uid == libros[i].getUid())
+        if (uid.equals(libros[i].getUid())) {
           libros[i].mostrarInformacion();
+        }
       }
     } else {
       System.out.println(SIN_LIBROS_MENSAJE);
@@ -67,8 +98,8 @@ class Libreria {
   public void buscarLibros(String nombre, String categoria, int anio, String autor) {
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
-        if (nombre == libros[i].getNombre() || categoria == libros[i].getCategoria() || anio == libros[i].getAnio()
-            || autor == libros[i].getAutor()) {
+        if (nombre.equals(libros[i].getNombre()) || categoria.equals(libros[i].getCategoria())
+            || anio == libros[i].getAnio() || autor.equals(libros[i].getAutor())) {
           libros[i].mostrarInformacion();
         }
       }
@@ -81,12 +112,12 @@ class Libreria {
     return total - (total * porcentajeDescuento);
   }
 
-  // el metodo getLibro usa Optional para 
+  // el metodo getLibro usa Optional para
   // permitir retornar vacio cuando el libro no existe
   private Optional<Libro> getLibro(String uid) {
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
-        if (libros[i].getUid() == uid) {
+        if (uid.equals(libros[i].getUid())) {
           return Optional.of(libros[i]);
         } else {
           Optional.empty();
@@ -98,14 +129,14 @@ class Libreria {
   }
 
   private void imprimirFactura(String infoVenta, String infoDescuento, double precioFinal) {
-      System.out.println("FACTURA DE VENTA");
-      System.out.println("-------------------------");
-      System.out.println(infoVenta);
-      System.out.println(infoDescuento);
-      System.out.println("-------------------------");
-      System.out.println("Precio final: $" + precioFinal);
-      System.out.println();
-      System.out.println();
+    System.out.println("FACTURA DE VENTA");
+    System.out.println("-------------------------");
+    System.out.println(infoVenta);
+    System.out.println(infoDescuento);
+    System.out.println("-------------------------");
+    System.out.println("Precio final: $" + precioFinal);
+    System.out.println();
+    System.out.println();
 
   }
 
@@ -115,25 +146,25 @@ class Libreria {
       String infoDescuento = "";
       double precioFinal = 0;
 
-
       for (int i = 0; i < uids.length; i++) {
         Libro libro = getLibro(uids[i]).get();
         String nombre = libro.getNombre();
         double precio = libro.getPrecio();
         libro.setStock(libro.getStock() - cantidades[i]);
-        infoVenta += String.format("Libro %s: %s | precio: %s | unidades: %s\n", (i + 1), nombre, precio, cantidades[i]);
+        infoVenta += String.format("Libro %s: %s | precio: %s | unidades: %s\n", (i + 1), nombre, precio,
+            cantidades[i]);
         precioFinal += precio * cantidades[i];
       }
 
       if (esEstudiante) {
         precioFinal = calcularDescuento(precioFinal);
-        infoDescuento = String.format("Descuento de estudiante: %s%%",porcentajeDescuento * 100);
+        infoDescuento = String.format("Descuento de estudiante: %s%%", porcentajeDescuento * 100);
       } else {
         infoDescuento = "No es estudiante, no tiene descuento.";
       }
 
       ingresos += precioFinal;
-      
+
       imprimirFactura(infoVenta, infoDescuento, precioFinal);
 
     }
