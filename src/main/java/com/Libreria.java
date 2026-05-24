@@ -54,13 +54,22 @@ class Libreria {
   }
 
   public void agregarStock(String uid, int stock) {
+    boolean existe = false;
     if (cantidad > 0) {
       for (int i = 0; i < cantidad; i++) {
         if (uid.equals(libros[i].getUid())) {
+          existe = true;
           libros[i].setStock(libros[i].getStock() + stock);
+          libros[i].mostrarInformacion();
+          System.out.println("Stock agregado correctamente.\n");
+        } else {
+          existe = false;
         }
       }
-      System.out.println("Stock agregado correctamente.\n");
+
+      if (existe == false) {
+        System.out.printf("No existe libro con uid: %s \n", uid);
+      }
     } else {
       System.out.println(SIN_LIBROS_MENSAJE);
     }

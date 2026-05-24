@@ -53,8 +53,7 @@ public class App {
     System.out.println("A continuación ingrese el uid del libro al cual le quiere agregar stock");
     System.out.print("Uid: ");
     String uid = leer.nextLine();
-    System.out.println("Buscando libro... ");
-    libreria.buscarLibros(uid);
+
     System.out.print("Agregar stock: ");
     int stock = Integer.parseInt(leer.nextLine());
     libreria.agregarStock(uid, stock);
@@ -113,6 +112,8 @@ public class App {
         case 3:
           villaNueva.buscarLibros();
           break;
+        case 4:
+          villaNueva.buscarLibros();
         default:
           break;
       }
