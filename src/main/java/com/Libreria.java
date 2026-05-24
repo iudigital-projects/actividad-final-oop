@@ -24,6 +24,7 @@ class Libreria {
     this.nombre = nombre;
   }
 
+  // METODOS
   public void mostrarInformacion() {
     System.out.printf("Libreria: %s | Ingresos: %s \n", nombre, ingresos);
   }
@@ -35,7 +36,7 @@ class Libreria {
       this.cantidad = this.cantidad + 1;
     }
   }
-
+  
   // BUSCAR LIBROS
   // Usamos sobrecarga de métodos para permitir diferentes busquedas
   //
