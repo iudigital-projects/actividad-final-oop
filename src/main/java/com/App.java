@@ -75,6 +75,39 @@ public class App {
     System.out.println();
   }
 
+  public static void venderLibros(Scanner leer, Libreria libreria) {
+    System.out.print("Ingrese solo el número de títulos a vender: ");
+    int numeroTitulos = Integer.parseInt(leer.nextLine());
+
+    int[] unidades = new int[numeroTitulos];
+    String[] uids = new String[numeroTitulos];
+
+    int cantidad = 0;
+    for(int i = 0; i < numeroTitulos; i++) {
+      if (cantidad < numeroTitulos) {
+        System.out.printf("Ingrese el uid del libro %s: ", i + 1);
+        uids[i] = leer.nextLine();
+        System.out.println();
+        System.out.printf("Ingresar unidades a vender para libro %s: ", i + 1);
+        unidades[i] = Integer.parseInt(leer.nextLine());
+        System.out.println();
+        cantidad++;
+      }
+    }
+
+    String respuestaEstudiante = "No";
+    boolean esEstudiante = false;
+    System.out.print("¿Es usted un estudiante? (Si / No): ");
+    respuestaEstudiante = leer.nextLine();
+    if (respuestaEstudiante.equals("Si")) {
+      esEstudiante = true;
+    } else {
+      esEstudiante = false;
+    }
+
+    libreria.venderLibros(uids, unidades, esEstudiante);
+  }
+
   public static void main(String[] args) {
 
     // INICIALIZAMOS UNA LIBRERIA CON UNOS CUANTOS LIBROS
@@ -112,7 +145,8 @@ public class App {
       System.out.println("3. Listar libros");
       System.out.println("4. Buscar libro");
       System.out.println("5. Vender libro");
-      System.out.println("6. Salir\n");
+      System.out.println("6. Mostrar información de libreria");
+      System.out.println("7. Salir\n");
 
       System.out.print("Elija una opción: ");
       opcion = Integer.parseInt(leer.nextLine());
@@ -130,11 +164,17 @@ public class App {
         case 4:
           buscarLibros(leer, villaNueva);
           break;
+        case 5:
+          venderLibros(leer, villaNueva);
+          break; 
+        case 6:
+          villaNueva.mostrarInformacion();
+          break;
         default:
           break;
       }
 
-    } while (opcion != 6);
+    } while (opcion != 7);
     leer.close();
 
   }

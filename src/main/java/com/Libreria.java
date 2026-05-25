@@ -26,7 +26,11 @@ class Libreria {
 
   // METODOS
   public void mostrarInformacion() {
-    System.out.printf("Libreria: %s | Ingresos: %s \n", nombre, ingresos);
+    System.out.println();
+    System.out.println("------------------------------------------------");
+    System.out.printf("Libreria: %s  |  Ingresos: $%s \n", nombre, ingresos);
+    System.out.println("------------------------------------------------");
+    System.out.println();
   }
 
   public void agregarLibro(Libro libro) {
