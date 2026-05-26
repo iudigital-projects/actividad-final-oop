@@ -7,43 +7,50 @@ public class App {
     System.out.println("------------------------------------------------------------");
     System.out.println("Por favor a continuación ingrese la información del libro: ");
     System.out.println();
-    System.out.print("Uid: ");
-    String uid = leer.nextLine();
 
-    System.out.print("Nombre: ");
-    String nombre = leer.nextLine();
+    try {
+      System.out.print("Uid: ");
+      String uid = leer.nextLine();
 
-    System.out.print("Autor: ");
-    String autor = leer.nextLine();
+      System.out.print("Nombre: ");
+      String nombre = leer.nextLine();
 
-    System.out.print("Precio: ");
-    int precio = Integer.parseInt(leer.nextLine());
+      System.out.print("Autor: ");
+      String autor = leer.nextLine();
 
-    System.out.print("Año de publicación: ");
-    int anio = Integer.parseInt(leer.nextLine());
+      System.out.print("Precio: ");
+      int precio = Integer.parseInt(leer.nextLine());
 
-    System.out.print("Categoria: ");
-    String categoria = leer.nextLine();
+      System.out.print("Año de publicación: ");
+      int anio = Integer.parseInt(leer.nextLine());
 
-    System.out.print("Stock disponible: ");
-    int stock = Integer.parseInt(leer.nextLine());
+      System.out.print("Categoria: ");
+      String categoria = leer.nextLine();
 
-    System.out.print("Descripcion: ");
-    String descripcion = leer.nextLine();
+      System.out.print("Stock disponible: ");
+      int stock = Integer.parseInt(leer.nextLine());
 
-    System.out.print("¿Está disponible? (Si/No): ");
-    String respuestaDisponible = leer.nextLine();
-    boolean disponible;
-    switch (respuestaDisponible) {
-      case "Si":
-        disponible = true;
-      case "No":
-        disponible = false;
-      default:
-        disponible = true;
+      System.out.print("Descripcion: ");
+      String descripcion = leer.nextLine();
+
+      System.out.print("¿Está disponible? (Si/No): ");
+      String respuestaDisponible = leer.nextLine();
+      boolean disponible;
+      switch (respuestaDisponible) {
+        case "Si":
+          disponible = true;
+        case "No":
+          disponible = false;
+        default:
+          disponible = true;
+      }
+
+      libreria.agregarLibro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
+    } catch (NumberFormatException e) {
+      System.out.println("Error: ingrese solo números en el precio, año y stock");
+      System.out.println("Vuelva a intentar nuevamente...");
     }
 
-    libreria.agregarLibro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
     System.out.println("------------------------------------------------------------");
     System.out.println();
   }
@@ -55,8 +62,13 @@ public class App {
     String uid = leer.nextLine();
 
     System.out.print("Agregar stock: ");
-    int stock = Integer.parseInt(leer.nextLine());
-    libreria.agregarStock(uid, stock);
+    try {
+      int stock = Integer.parseInt(leer.nextLine());
+      libreria.agregarStock(uid, stock);
+    } catch (NumberFormatException e) {
+      System.out.println("Error: ingrese solo números para stock");
+      System.out.println("Vuelva a intentar nuevamente...");
+    }
   }
 
   public static void buscarLibros(Scanner leer, Libreria libreria) {
@@ -66,7 +78,15 @@ public class App {
     System.out.print("Ingrese la categoria o enter para dejar vacío: ");
     String categoria = leer.nextLine();
     System.out.print("Ingrese año o el número 0: ");
-    int anio = Integer.parseInt(leer.nextLine());
+    
+    int anio;
+    try {
+      anio = Integer.parseInt(leer.nextLine());
+    } catch (NumberFormatException e) {
+      System.out.println("Error: ingrese solo números para el año");
+      return;
+    }
+
     System.out.print("Ingrese autor o enter para dejar vacío: ");
     String autor = leer.nextLine();
     System.out.println();
@@ -108,6 +128,57 @@ public class App {
     libreria.venderLibros(uids, unidades, esEstudiante);
   }
 
+  public static void ejecutarMenu(Libreria libreria) {
+    int opcion;
+    Scanner leer = new Scanner(System.in);
+    do {
+      System.out.println("MENÚ\n");
+      System.out.println("1. Agregar libro");
+      System.out.println("2. Agregar stock");
+      System.out.println("3. Listar libros");
+      System.out.println("4. Buscar libro");
+      System.out.println("5. Vender libro");
+      System.out.println("6. Mostrar información de libreria");
+      System.out.println("7. Salir\n");
+
+      System.out.print("Elija una opción: ");
+      try {
+        opcion = Integer.parseInt(leer.nextLine());
+      } catch (NumberFormatException e) {
+        System.out.println("Error: Solo se admiten números para la opción de menú, vuelva a intentarlo...");
+        System.out.println();
+        // Se ejecuta de nuevo el menú, para no sacar al usuario de la aplicación
+        ejecutarMenu(libreria);
+        return;
+      }
+
+      switch (opcion) {
+        case 1:
+          agregarLibro(leer, libreria);
+          break;
+        case 2:
+          agregarStock(leer, libreria);
+          break;
+        case 3:
+          libreria.buscarLibros();
+          break;
+        case 4:
+          buscarLibros(leer, libreria);
+          break;
+        case 5:
+          venderLibros(leer, libreria);
+          break; 
+        case 6:
+          libreria.mostrarInformacion();
+          break;
+        default:
+          break;
+      }
+
+    } while (opcion != 7);
+    leer.close();
+  }
+
   public static void main(String[] args) {
 
     // INICIALIZAMOS UNA LIBRERIA CON UNOS CUANTOS LIBROS
@@ -135,47 +206,8 @@ public class App {
     villaNueva.agregarLibro(libro3);
     villaNueva.agregarLibro(libro4);
 
-    // Menú
-    int opcion;
-    Scanner leer = new Scanner(System.in);
-    do {
-      System.out.println("MENÚ\n");
-      System.out.println("1. Agregar libro");
-      System.out.println("2. Agregar stock");
-      System.out.println("3. Listar libros");
-      System.out.println("4. Buscar libro");
-      System.out.println("5. Vender libro");
-      System.out.println("6. Mostrar información de libreria");
-      System.out.println("7. Salir\n");
-
-      System.out.print("Elija una opción: ");
-      opcion = Integer.parseInt(leer.nextLine());
-
-      switch (opcion) {
-        case 1:
-          agregarLibro(leer, villaNueva);
-          break;
-        case 2:
-          agregarStock(leer, villaNueva);
-          break;
-        case 3:
-          villaNueva.buscarLibros();
-          break;
-        case 4:
-          buscarLibros(leer, villaNueva);
-          break;
-        case 5:
-          venderLibros(leer, villaNueva);
-          break; 
-        case 6:
-          villaNueva.mostrarInformacion();
-          break;
-        default:
-          break;
-      }
-
-    } while (opcion != 7);
-    leer.close();
+    // Ejecutar el menú para la libreria villaNueva
+    ejecutarMenu(villaNueva);
 
   }
 
