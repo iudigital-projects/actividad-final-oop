@@ -12,6 +12,12 @@ public class App {
       System.out.print("Uid: ");
       String uid = leer.nextLine();
 
+      if(libreria.libroExiste(uid)) {
+        System.out.println("El libro ya existe intente de nuevo");
+        agregarLibro(leer, libreria);
+        return;
+      }
+
       System.out.print("Nombre: ");
       String nombre = leer.nextLine();
 
@@ -58,8 +64,15 @@ public class App {
   private static void agregarStock(Scanner leer, Libreria libreria) {
     System.out.println("--------------------------------------------");
     System.out.println("A continuación ingrese el uid del libro al cual le quiere agregar stock");
+
     System.out.print("Uid: ");
     String uid = leer.nextLine();
+
+    if(!libreria.libroExiste(uid)) {
+      System.out.println("El libro no existe intente nuevamente");
+      agregarStock(leer, libreria);
+      return;
+    }
 
     System.out.print("Agregar stock: ");
     try {
@@ -107,7 +120,16 @@ public class App {
       if (cantidad < numeroTitulos) {
         System.out.printf("Ingrese el uid del libro %s: ", i + 1);
         uids[i] = leer.nextLine();
-        System.out.println();
+
+        if (!libreria.libroExiste(uids[i])) {
+          System.out.println();
+          System.out.println("El libro no existe en la libreria, intente de nuevo");
+          System.out.println();
+
+          venderLibros(leer, libreria);
+          return;
+        }
+
         System.out.printf("Ingresar unidades a vender para libro %s: ", i + 1);
         unidades[i] = Integer.parseInt(leer.nextLine());
         System.out.println();

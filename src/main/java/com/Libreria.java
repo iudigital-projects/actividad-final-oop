@@ -11,7 +11,9 @@ class Libreria {
   private double porcentajeDescuento = 0.1;
 
   private String SIN_LIBROS_MENSAJE = "No hay libros para mostrar";
-
+  
+  // Sobrecarga - Overload 
+  // Constructo Libreria
   Libreria(String nombre, Libro[] libros, double ingresos, double porcentajeDescuento, int max) {
     this.nombre = nombre;
     this.libros = libros;
@@ -31,15 +33,29 @@ class Libreria {
     System.out.printf("Libreria: %s  |  Ingresos: $%s \n", nombre, ingresos);
     System.out.println("------------------------------------------------");
     System.out.println();
+  } 
+
+  boolean libroExiste(String uid) {
+    boolean existe = false;
+    if (cantidad > 0) {
+      for (int i = 0; i < cantidad; i++) {
+        if (uid.equals(libros[i].getUid())) {
+          existe = true;
+        }
+      }
+    }
+
+    return existe;
   }
 
+  // Sobrecarga sobre el método agregar libro
   public void agregarLibro(Libro libro) {
     if (this.cantidad < this.max) {
       this.libros[cantidad] = libro;
       this.cantidad = this.cantidad + 1;
     }
   }
-
+ 
   // Agregar libro a la tienda
   public void agregarLibro(
       String uid,
@@ -52,8 +68,14 @@ class Libreria {
       String descripcion,
       boolean disponible) {
     if (this.cantidad < this.max) {
-      this.libros[cantidad] = new Libro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
-      this.cantidad = this.cantidad + 1;
+
+      if (libroExiste(uid)) {
+        this.libros[cantidad] = new Libro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
+        this.cantidad = this.cantidad + 1;
+      } else {
+        System.out.println("El libro ya existe");
+      }
+
     }
   }
 
@@ -116,10 +138,10 @@ class Libreria {
             || anio == libros[i].getAnio() || autor.equals(libros[i].getAutor())) {
           existe = true;
           libros[i].mostrarInformacion();
-        } 
+        }
       }
 
-      if(existe == false) {
+      if (existe == false) {
         System.out.println("No se encontro ningún libro");
       }
     } else {
@@ -148,15 +170,16 @@ class Libreria {
   }
 
   private void imprimirFactura(String infoVenta, String infoDescuento, double precioFinal) {
+    System.out.println();
+    System.out.println("--------------------------------------------------------");
     System.out.println("FACTURA DE VENTA");
-    System.out.println("-------------------------");
+    System.out.println("--------------------------------------------------------");
     System.out.println(infoVenta);
     System.out.println(infoDescuento);
-    System.out.println("-------------------------");
+    System.out.println("--------------------------------------------------------");
     System.out.println("Precio final: $" + precioFinal);
+    System.out.println("--------------------------------------------------------");
     System.out.println();
-    System.out.println();
-
   }
 
   public void venderLibros(String[] uids, int[] cantidades, boolean esEstudiante) {
