@@ -1,5 +1,13 @@
 # Actividad final programación orientada a objetos
 
+Un pequeño programa para la gestión de venta de una librería
+
+## Integrantes del equipo
+
+Gloris Mosquera
+Karen Bueno
+Christian Velasco
+
 ## Compilar
 
 ```sh
@@ -23,4 +31,3 @@ Alternativa sin Maven:
 ```sh
 java -cp target/classes com.App
 ```
-

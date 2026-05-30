@@ -69,7 +69,7 @@ class Libreria {
       boolean disponible) {
     if (this.cantidad < this.max) {
 
-      if (libroExiste(uid)) {
+      if (!libroExiste(uid)) {
         this.libros[cantidad] = new Libro(uid, nombre, autor, precio, anio, categoria, stock, descripcion, disponible);
         this.cantidad = this.cantidad + 1;
       } else {
